@@ -1,0 +1,63 @@
+//将数组排序
+//定义两个指针，初始状态分别指向数组的头和尾
+//将两个指针所指元素相加与目标数比较大小
+//如果小于，则头指针向后移动
+//如果大于，则头指针向前移动
+//复杂度为O（nlogn）
+typedef struct node{
+    int data;//存储数组的数字大小
+    int index;//存储数组的数字的下标
+    node() {};
+    node(int d,int i):data(d),index(i){};
+}Node;
+//定义结构体node的排序规则
+bool compare(const Node &a,const Node &b)
+{
+    return a.data<b.data;
+}
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        
+        vector<int> result;
+        vector<Node> nums(numbers.size());
+        int m_max,min;
+        for(int i=0;i<numbers.size();i++)
+        {
+            nums[i]=Node(numbers[i],i+1);
+        }
+        //将数组进行排序
+        sort(nums.begin(),nums.end(),compare);
+        //头指针和尾指针
+        int begin=0;
+        int end=nums.size()-1;
+        int sum=0;
+        while(begin<end)
+        {
+            sum=nums[begin].data+nums[end].data;
+            if(sum==target)
+            {
+                if(nums[begin].index>nums[end].index)
+                {
+                    result.push_back(nums[end].index);
+                    result.push_back(nums[begin].index);
+                }
+                else
+                {
+                    result.push_back(nums[begin].index);
+                    result.push_back(nums[end].index);
+                }
+                break;
+            }else if(sum>target)
+            {
+                end--;
+            }
+            else if(sum<target)
+            {
+                begin++;
+            }
+        }
+        return result;
+    }
+};
