@@ -1,0 +1,37 @@
+//先对数组进行排序
+//然后先计算2sum
+//将target-2sum后得到c
+//用二分法查找数组是否存在c
+//复杂度为O（N^2logN）
+
+class Solution {
+public:
+    vector<vector<int> > threeSum(vector<int> &num) {
+      //结果数组
+      vector<vector<int>> result;
+      //a和b迭代器
+      vector<int>::iterator a,b;
+      int c;
+      int target=0;
+      int len=num.size();
+      //小于三个元素直接返回
+      if(len<3)
+      {
+          return result;
+      }
+      //对数组进行排序
+      sort(num.begin(),num.end());
+      //遍历数组，遇到重复的数字，跳过
+      for(a=num.begin();a<prev(num.end(),2);a=upper_bound(next(a),prev(num.end(),2),*a))
+      {
+          for(b=next(a);b<num.end();b=upper_bound(next(b),num.end(),*b))
+          {
+              int c=target-*a-*b;
+              //二分法查找第三个元素的
+              if(binary_search(next(b),num.end(),c))
+                 result.push_back(vector<int>{*a,*b,c});
+          }
+      }
+      return result;
+    }
+};
