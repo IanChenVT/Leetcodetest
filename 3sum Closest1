@@ -1,0 +1,44 @@
+//先对数组进行排序
+//用a遍历整个数组遇到重复元素，则跳过
+//b和c分别指向剩余数组的头和尾
+//如果和小于目标，b向后移动
+//如果和大于目标，c向前移动
+//每一次与与最小差距比较，小于则更新最小差距。
+class Solution {
+public:
+    int threeSumClosest(vector<int> &num, int target) {
+        //
+        vector<int>::iterator a,b,c;
+        int result=0;
+        int sum=0;
+        int min_gap=INT_MAX;
+        int gap=0;
+        int len=num.size();
+        //排序
+        sort(num.begin(),num.end());
+        for(a=num.begin();a<prev(num.end(),2);a=upper_bound(next(a),prev(num.end(),2),*a))
+        {
+            b=next(a);
+            c=prev(num.end());//end最后一个元素的下一个位置
+            while(b<c)
+            { 
+                //左右夹逼的方法计算
+                sum=*a+*b+*c;
+                gap=abs(sum-target);
+                if(gap<min_gap)
+                {
+                    result=sum;
+                    min_gap=gap;
+                }
+                if(sum<target)
+                {
+                    b++;
+                }else
+                {
+                    c--;
+                }
+            }
+        }
+        return result;
+    }
+};
