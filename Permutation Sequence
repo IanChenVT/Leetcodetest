@@ -1,0 +1,65 @@
+//康托展开：全排列到一个自然数的双射,该自然数表示这个排列的位置
+//X=an*(n-1)!+an-1*(n-2)!+...+ai*(i-1)!+...+a2*1!+a1*0!
+//ai为整数，并且0<=ai<i(1<=i<=n)
+//适用范围：没有重复元素的全排列
+//如何找出第16个（按字典序的）{1,2,3,4,5}的全排列？
+//1. 首先用16-1得到15
+//2. 用15去除4! 得到0余15
+//3. 用15去除3! 得到2余3
+//4. 用3去除2! 得到1余1
+//5. 用1去除1! 得到1余0
+//有0个数比它小的数是1，所以第一位是1
+//有2个数比它小的数是3，但1已经在之前出现过了所以是4
+//有1个数比它小的数是2，但1已经在之前出现过了所以是3
+//有1个数比它小的数是2，但1,3,4都出现过了所以是5
+//最后一个数只能是2
+//所以排列为1 4 3 5 2
+
+
+
+
+
+//方法二：穷举法
+class Solution {
+public:
+  //求下一个排序的函数模板
+    template<typename BidiIt>
+    bool next_Permutation(BidiIt first,BidiIt last)
+    {
+        //定义两个逆向迭代器,逆转数组
+        reverse_iterator<BidiIt> rfirst=reverse_iterator<BidiIt>(last);
+        reverse_iterator<BidiIt> rlast=reverse_iterator<BidiIt>(first);
+        //
+        reverse_iterator<BidiIt> pivot=next(rfirst);
+        while(pivot!=rlast&&!(*pivot<*prev(pivot)))
+        {
+            pivot++;
+        }
+        //不存在升序，则将字符串全部逆转
+        if(pivot==rlast)
+        {
+            reverse(rfirst,rlast);
+            return false;
+        }
+        //如果存在，则寻找右边比它大的最小一个元素。然后交换位置
+        reverse_iterator<BidiIt>  change=find_if(rfirst,pivot,bind1st(less<int>(),*pivot));
+        //bind1st(const Operation& op, const T& x)就是这么一个操作：x op value
+        //less<int>()小于操作符
+        //greate<int>()大于操作符
+        swap(*change,*pivot);
+        reverse(rfirst,pivot);
+        return true;
+    }
+    string getPermutation(int n, int k) {
+        string s(n,'0');
+        for(int i=0;i<n;i++)
+        {
+            s[i]+=i+1;
+        }
+        for(int i=0;i<k-1;i++)
+        {
+            next_Permutation(s.begin(),s.end());
+        }
+        return s;
+    }
+};
