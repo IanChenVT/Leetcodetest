@@ -1,0 +1,37 @@
+/*对于每个柱子，找到其左右两边最高的柱子，该柱子能容纳的面积就是min(max_left,
+max_right) - height。所以，
+1. 从左往右扫描一遍，对于每个柱子，求取左边最大值；
+2. 从右往左扫描一遍，对于每个柱子，求最大右值；
+3. 再扫描一遍，把每个柱子的面积并累加。
+时间复杂度O(n)，空间复杂度O(n)
+*/
+class Solution {
+public:
+    int trap(int A[], int n) {
+        int sum=0;//水槽的总容量
+        int height;//每个柱子的水容量
+        //左边最大元素数组
+        int *max_left=new int[n]();
+        //右边最大元素数组
+        int *max_right=new int[n]();
+        for(int i=1;i<n;i++)
+        {
+            //动态规划
+            max_left[i]=max(max_left[i-1],A[i-1]);
+            max_right[n-i-1]=max(max_right[n-i],A[n-i]);
+        }
+        
+        for(int i=0;i<n;i++)
+        {
+            height=min(max_left[i],max_right[i]);
+            if(height>A[i])
+            {
+                sum+=height-A[i];
+            }
+        }
+        //释放空间
+        delete[] max_left;
+        delete[] max_right;
+        return sum;
+    }
+};
