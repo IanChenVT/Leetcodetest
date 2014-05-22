@@ -35,3 +35,53 @@ public:
         return sum;
     }
 };
+
+/*
+1. 扫描一遍，找到最高的柱子，这个柱子将数组分为两半；
+2. 处理左边一半；
+3. 处理右边一半
+时间复杂度O(n)，空间复杂度O(1)
+*/
+class Solution {
+public:
+    int trap(int A[], int n) {
+      int vector=0;
+      //最高元素
+      int max=0;
+      for(int i=0;i<n;++i)
+      {
+          if(A[i]>A[max])
+          {
+              max=i;
+          }
+      }
+      //左边元素
+      int peak=0;
+      for(int i=0;i<max;i++)
+      {
+          if(A[i]>peak)
+          {
+              peak=A[i];
+          }
+          else
+          {
+              vector+=peak-A[i];
+          }
+      }
+      //右边元素
+      int top=0;
+      for(int j=n-1;j>max;j--)
+      {
+          if(A[j]>top)
+          {
+              top=A[j];
+          }
+          else
+          {
+              vector+=top-A[j];
+          }
+      }
+      return vector;
+    }
+};
+
