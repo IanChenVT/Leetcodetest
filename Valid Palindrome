@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        //忽略大小写字母，将字符串全转化为小写字母
+        transform(s.begin(),s.end(),s.begin(),::tolower);
+        //定义头尾指针,遍历这个字符串一次就可以检查出字符串是否是回文
+        string::iterator head=s.begin();
+        string::iterator tail=prev(s.end());
+        while(head<tail)
+        {
+            if(!isalnum(*head))
+            {
+                head++;
+            }
+            else if(!isalnum(*tail))
+            {
+                tail--;
+            }
+            else if(*head==*tail)
+            {
+                head++;
+                tail--;
+            }
+            else if(*head!=*tail)
+            {
+               return false;
+            }
+        }
+        return true;
+    }
+};
