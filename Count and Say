@@ -1,0 +1,39 @@
+//1
+//1:1个1->11
+//11:2个1->21
+//21:1个2&1个1->1211
+//1211:1个1&1个2&2个1->111221
+//111221:3个1&2个2&1个1->311221
+class Solution {
+public:
+    string getNext(const string &s){
+        stringstream result;
+        int count=1;
+        char num=s[0];
+        for(int i=1;i<s.size();i++)
+        {
+            if(num==s[i])
+            {
+                count++;
+            }
+            else
+            {
+                result<<count;
+                result<<num;
+                num=s[i];
+                count=1;
+            }
+        }
+        result<<count;
+        result<<num;
+        return result.str();
+    }
+    string countAndSay(int n) {
+       string s("1");
+       while(--n)
+       {
+           s=getNext(s);
+       }
+       return s;
+    }
+};
