@@ -1,0 +1,30 @@
+//回文构词法
+//使用哈希表
+//对输入的字符串进行排序，设为键值
+//然后对字符串，根据键值进行分类
+class Solution {
+public:
+    vector<string> anagrams(vector<string> &strs) {
+        //map
+        unordered_map<string,vector<string>> group;
+        //将字符串表输入存入map表中
+        vector<string>::iterator iter1;
+        for(iter1=strs.begin();iter1!=strs.end();iter1++)
+        {
+            string key=*iter1;
+            sort(key.begin(),key.end());
+            group[key].push_back(*iter1);
+        }
+        //把回文结果输出
+        vector<string> result;
+        unordered_map<string,vector<string>>::iterator iter2;
+        for(iter2=group.begin();iter2!=group.end();iter2++)
+        {
+            if(iter2->second.size()>1)
+            {
+                result.insert(result.end(),iter2->second.begin(),iter2->second.end());
+            }
+        }
+        return result;
+    }
+};
