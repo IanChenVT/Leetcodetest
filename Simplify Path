@@ -1,0 +1,52 @@
+//简化路径
+//用栈存储目录
+//碰到/.不作任何操作
+//碰到/..删除栈顶
+//碰到//或///当成/，不作任何操作
+class Solution {
+public:
+    string simplifyPath(string path) {
+        //栈
+        vector<string> dirs;
+        string::iterator iter1;
+        for(iter1=path.begin();iter1!=path.end();)
+        {
+            iter1++;//存的是/
+            //找到下一个/的位置
+            string::iterator iter2;
+            iter2=find(iter1,path.end(),'/');
+            //取得两个//之间的字符串
+            string dir=string(iter1,iter2);
+            if(!dir.empty()&&dir!=".")
+            {
+                if(dir=="..")
+                {
+                    if(!dirs.empty())
+                    {
+                      dirs.pop_back();
+                    }
+                }
+                else
+                {
+                    dirs.push_back(dir);
+                }
+            }
+            iter1=iter2;
+        }
+        //
+        stringstream out;
+        if(dirs.empty())
+        {
+            out<<"/";
+        }
+        else
+        {
+            vector<string>::iterator iter=dirs.begin();
+            for(;iter!=dirs.end();iter++)
+            {
+                out<<'/'<<*iter;
+            }
+        }
+        return out.str();
+    }
+};
