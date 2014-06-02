@@ -42,3 +42,61 @@ public:
         return result;
     }
 };
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+//采用线索二叉树的遍历方法
+//遍历
+//如果当前节点的左子树为空，将当前节点输出并且当前结点的右子树设为的当前结点
+//如果当前节点的左子树不为空，则寻找当前节点的左子树中找到中序遍历的前序元素
+//如果前驱节点的右子树为空说明还没有线索化的，输出当前节点，并线索化。前驱节点的右子树指向当前节点，将当前节点的左子树设为当前节点
+//如果有线索化的说明左子树已经遍历完成转为遍历右子树，则删除线索，然后将当前节点设为线索所指的节点
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode *root) {
+       vector<int> result;
+       TreeNode *cur,*prev;
+       cur=root;
+       //遍历
+       while(cur!=nullptr)
+       {
+           //如果当前节点的左子树为空，将当前节点输出并且当前结点的右子树设为的当前结点
+           if(cur->left==nullptr)
+           {
+               result.push_back(cur->val);
+               prev=cur;
+               cur=cur->right;
+           }
+           else
+           {
+               //当前节点的左子树不为空，寻找其中序遍历的前序节点
+               TreeNode *node=cur->left;
+               while(node->right!=nullptr&& node->right!=cur)
+               {
+                  node=node->right;
+               }
+               //如果前驱节点的右子树为空说明还没有线索化的，输出当前节点，并线索化。前驱节点的右子树指向当前节点，将当前节点的左子树设为当前节点
+               if(node->right==nullptr)
+               {
+                   result.push_back(cur->val);
+                   node->right=cur;
+                   prev=cur;
+                   cur=cur->left;
+               }
+               else
+               {
+                   //如果有线索化的说明左子树已经遍历完成转为遍历右子树，则删除线索，然后将当前节点设为线索所指的节点
+                   node->right=nullptr;
+                   cur=cur->right;
+               }
+           }
+       }
+       return result;
+    }
+};
