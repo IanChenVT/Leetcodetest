@@ -1,0 +1,44 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ //树的先根遍历
+ //根入栈
+ //根出栈后先将右孩子入栈，再将左孩子入栈
+ //循环这个过程
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode *root) {
+        vector<int> result;
+        const TreeNode* p;
+        stack<const TreeNode*>s;
+        //根入栈
+        p=root;
+        if(p!=nullptr)
+        {
+          s.push(p);  
+        }
+        while(!s.empty())
+        {
+            p=s.top();
+            s.pop();
+            result.push_back(p->val);
+            //右孩子入栈
+            if(p->right!=nullptr)
+            {
+                s.push(p->right);
+            }
+            //左孩子入栈
+           if(p->left!=nullptr)
+            {
+                s.push(p->left);
+            }
+        }
+        return result;
+    }
+};
