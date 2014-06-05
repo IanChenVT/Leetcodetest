@@ -1,0 +1,51 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ 
+//二叉排序树的性质是以第k个元素为根，则左子树由[1,k-1],则右子树[k+1,n]
+//循环以每个元素为根，然后递归获取左子树可能的排列和右子树可能的排列
+class Solution {
+public:
+    vector<TreeNode *> generateTrees(int n) {
+        if(n==0) 
+          return generate(1,0);
+        return generate(1,n);
+    }
+    vector<TreeNode *> generate(int start,int end)
+    {
+        vector<TreeNode*> subtree;
+        //递归终止条件，就只有一个元素
+        if(start>end)
+        {
+            subtree.push_back(nullptr);
+            return subtree;
+        }
+        //循环以每个元素为根
+        for(int k=start;k<=end;k++)
+        {
+            //左子树
+            vector<TreeNode*> subleft=generate(start,k-1);
+            //右子树
+            vector<TreeNode*> subright=generate(k+1,end);
+            vector<TreeNode*>::iterator leftitr;
+            vector<TreeNode*>::iterator rightitr;
+            for(leftitr=subleft.begin();leftitr!=subleft.end();leftitr++)
+            {
+                for(rightitr=subright.begin();rightitr!=subright.end();rightitr++)
+                {
+                    TreeNode *node=new TreeNode(k);
+                    node->left=*leftitr;
+                    node->right=*rightitr;
+                    subtree.push_back(node);
+                }
+            }
+        }
+        return subtree;
+    }
+};
