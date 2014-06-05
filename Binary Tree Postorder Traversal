@@ -1,0 +1,47 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode *root) {
+        vector<int> result;
+        const TreeNode *p,*q;
+        stack<const TreeNode *>s;
+        p=root;
+        do
+        {
+            //一直往左走，寻找最左叶子
+            while(p!=nullptr)
+            {
+                s.push(p);
+                p=p->left;
+            }
+            //q记录访问过的节点或是空节点
+            q=nullptr;
+            while(!s.empty()){
+               p=s.top();
+               s.pop();
+               //右子树被访问过或是是空，就可以输出
+               if(p->right==q)
+               {
+                  result.push_back(p->val);
+                   q=p;//保存刚访问的结点
+                }
+               //当前节点不能输出，二次进栈
+               else
+               {
+                   s.push(p);
+                   p=p->right;
+                   break;
+              }
+           }
+        }while(!s.empty());
+        return result;
+    }
+};
