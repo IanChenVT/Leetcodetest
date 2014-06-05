@@ -1,0 +1,47 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int> > levelOrder(TreeNode *root) {
+        vector<vector<int>> result;
+        const TreeNode *p;
+        //树为空
+        if(root==nullptr)
+        {
+            return result;
+        }
+        //current和next队列
+        queue<const TreeNode*>current,next;
+        vector<int> level;
+        current.push(root);
+        while(!current.empty())
+        {
+            while(!current.empty())
+            {
+                p=current.front();
+                current.pop();
+                level.push_back(p->val);
+                if(p->left!=nullptr)
+                {
+                    next.push(p->left);
+                }
+                if(p->right!=nullptr)
+                {
+                    next.push(p->right);
+                }
+            }
+            //交换next和current队列
+            result.push_back(level);
+            level.clear();
+            swap(next,current);
+        }
+        return result;
+    }
+};
