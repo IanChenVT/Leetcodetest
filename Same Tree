@@ -1,0 +1,46 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ //分别对两棵树进行先序遍历
+ //相对应的节点同时出栈，同时进栈
+class Solution {
+public:
+    bool isSameTree(TreeNode *p, TreeNode *q) {
+        stack<TreeNode*> s;
+        s.push(p);
+        s.push(q);
+        while(!s.empty())
+        {
+            p=s.top();
+            s.pop();
+            q=s.top();
+            s.pop();
+            
+            if(!p&&!q) //同时为空
+            {
+                continue;
+            }
+            if(!p||!q)
+            {
+                return false;
+            }
+            if(p->val!=q->val)
+            {
+                return false;
+            }
+            
+            s.push(p->left);
+            s.push(q->left);
+            
+            s.push(p->right);
+            s.push(q->right);
+        }
+        return true;
+    }
+};
