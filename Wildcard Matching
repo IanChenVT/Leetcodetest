@@ -1,0 +1,61 @@
+class Solution {
+public:
+    bool isMatch(const char *s, const char *p) {
+        //星号标记位
+        bool star=false;
+        const char * ptr;
+        const char * str;
+        //遍历目标字符串
+        for(ptr=p,str=s;*str!='\0';str++,ptr++)
+        {
+            switch(*ptr)
+            {
+                //?可以表示任何单个字符，不用做任何操作，直接比较目标串和模式串的下一个字符
+                case '?':
+                  break;
+                //*可以表示任何长度的字符
+                case '*':
+                star=true;
+                //s记录*匹配起始位置,然后遍历后面的字符
+                //p一直指着*星号的第一个非*字符
+                s=str;
+                p=ptr;
+                //跳过连续的*号符
+                while(*p=='*')
+                {
+                    p++;
+                }
+                //跳过连续*后，p字符串结束
+                if(*p=='\0')
+                {
+                    return true;
+                }
+                //str和ptr保持不移动
+                str=s-1;
+                ptr=p-1;
+                break;
+                //除了?和*的其他字符
+                default:
+                //目标字符和模式字符不相等，那么只有前面存在*,也是匹配
+                   if(*str!=*ptr)
+                   {
+                    //如果前面没有*,则匹配不成功
+                    if(!star)
+                    {
+                        return false;
+                    }
+                    //如果前面存在*,则将跳过目标字符串的字符
+                    s++;
+                    str=s-1;//其实就是和s一个位置
+                    ptr=p-1;//一直指着*星号的第一个非*字符
+                   }
+                
+                //目标字符和模式字符相等，不做任何操作
+            }
+        }
+       //如果末尾存在*则跳过星号
+        while(*ptr=='*')
+             ptr++;
+       return (*ptr=='\0');
+    }
+};
