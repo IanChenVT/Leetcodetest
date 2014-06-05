@@ -1,0 +1,37 @@
+//字符串匹配的暴力法
+class Solution {
+public:
+    char *strStr(char *haystack, char *needle) {
+        if(!*needle)
+        {
+            return (char*)haystack;
+        }
+        const char*p1;
+        const char*p2;
+        const char*p1_advance=haystack;
+        //将p1_advance指针前进needle的长度-1
+        for(p2=&needle[1];*p2;p2++)
+        {
+            p1_advance++;
+        }
+        //处理匹配
+        //p1_old记录字符串的头
+        //p2_advance处理字符串的尾
+        for(p1=haystack;*p1_advance;p1_advance++)
+        {
+            char *p1_old=(char*)p1;
+            p2=needle;
+            while(*p1&&*p2&&*p1==*p2)
+            {
+                p1++;
+                p2++;
+            }
+            if(!*p2)
+            {
+                return p1_old;
+            }
+            p1=p1_old+1;
+        }
+        return nullptr;
+    }
+};
