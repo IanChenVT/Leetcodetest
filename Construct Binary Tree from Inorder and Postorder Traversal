@@ -1,0 +1,44 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ //树的中序和树的后序
+ //中序为24153
+ //后序为42531
+ //后序的最后一个元素为根
+ //然后在中序中前面为左子树，后面为右子树
+ //递归处理
+class Solution {
+public:
+    TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
+        return buildTree(begin(inorder),end(inorder),begin(postorder),end(postorder));
+    }
+    template<typename InputIterator>
+    TreeNode *buildTree(InputIterator in_first,InputIterator in_last,InputIterator post_first,InputIterator post_last)
+    {
+        //递归终止条件是中序、后序的数的个数为1
+        if(in_first==in_last)
+        {
+            return nullptr;
+        }
+        if(post_first==post_last)
+        {
+            return nullptr;
+        }
+        //取后序的最后一个元素
+        TreeNode *root=new TreeNode(*prev(post_last));
+        //在中序中寻找后序的最后一个元素的位置
+        auto inRootPos=find(in_first,in_last,*prev(post_last));
+        size_t leftsize=distance(in_first,inRootPos);
+        //递归处理左子树
+        root->left=buildTree(in_first,next(in_first,leftsize),post_first,next(post_first,leftsize));
+        root->right=buildTree(next(inRootPos),in_last,next(post_first,leftsize),prev(post_last));
+        //递归处理右子树
+        return root;
+    }
+};
