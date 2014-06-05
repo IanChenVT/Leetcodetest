@@ -1,0 +1,80 @@
+class Solution {
+public:
+    void setZeroes(vector<vector<int> > &matrix) {
+        int rownum=matrix.size();
+        int colnum=matrix[0].size();
+        /*vector<bool> row(rownum,false);
+        vector<bool> col(colnum,false);
+        //遍历矩阵，找到为了0的元素，就把对应行和列标记为true
+        for(int i=0;i<rownum;++i)
+        {
+            for(int j=0;j<colnum;++j)
+            {
+                if(matrix[i][j]==0)
+                {
+                    row[i]=col[j]=true;
+                }
+            }
+        }
+        for(int i=0;i<rownum;++i)
+        {
+            if(row[i])
+            {
+                for(int j=0;j<colnum;j++)
+                {
+                    matrix[i][j]=0;
+                }
+            }
+        }
+        for(int i=0;i<colnum;++i)
+        {
+            if(col[i])
+            {
+                for(int j=0;j<rownum;j++)
+                {
+                    matrix[j][i]=0;
+                }
+            }
+        }*/
+        //复用第一行、第一列
+        bool row_has_zero=false;
+        bool col_has_zero=false;
+        //遍历第一行，是否存在0
+        for(int i=0;i<colnum;++i)
+        {
+            if(matrix[0][i]==0)
+            {
+                row_has_zero=true;
+                break;
+            }
+        }
+        //遍历第一列，是否存在0
+        for(int i=0;i<rownum;++i)
+        {
+            if(matrix[i][0]==0)
+            {
+                col_has_zero=true;
+                break;
+            }
+        }
+        //遍历整个矩阵
+        for(int i=1;i<rownum;++i)
+        {
+            for(int j=1;j<colnum;++j)
+            {
+                if(matrix[i][j]==0)
+                {
+                    matrix[i][0]=0;
+                    matrix[0][j]=0;
+                }
+            }
+        }
+       for(int i=1;i<rownum;++i)
+       {
+            for(int j=1;j<colnum;++j)
+            {
+                if(matrix[0][j]==0||matrix[i][0]==0)
+                {
+                    matrix[i][j]=0;
+                }
+            }
