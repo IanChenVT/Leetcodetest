@@ -1,0 +1,59 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ //广度搜索的改进版本，多加一个bool，用bool记录从左到有还是从右到左，每一层结束就反转一次
+class Solution {
+public:
+    vector<vector<int> > zigzagLevelOrder(TreeNode *root) {
+        vector<vector<int>> result;
+        //树为空的情况
+        if(root==nullptr)
+        {
+            return result;
+        }
+        queue<const TreeNode*>current,next;
+        vector<int> level;
+        bool left_to_right=true;
+        
+        //根入队列
+        current.push(root);
+        //广度遍历树
+        while(!current.empty())
+        {
+            while(!current.empty())
+            {
+                const TreeNode *node=current.front();
+                current.pop();
+                level.push_back(node->val);
+                if(node->left!=nullptr)
+                {
+                    next.push(node->left);
+                }
+                if(node->right!=nullptr)
+                {
+                    next.push(node->right);
+                }
+            }
+            //根据bool进行反转
+            if(left_to_right)
+            {
+                left_to_right=false;
+            }
+            else
+            {
+                reverse(level.begin(),level.end());
+                left_to_right=true;
+            }
+            result.push_back(level);
+            level.clear();
+            swap(next,current);
+        }
+      return result;  
+    }
+};
