@@ -1,0 +1,22 @@
+//十进制的进位
+class Solution {
+public:
+    void add(vector<int> &digits,int digit)
+    {
+        int carry=digit;
+        vector<int>::reverse_iterator iter;
+        for(iter=digits.rbegin();iter<digits.rend();iter++)
+        {
+            *iter+=carry;
+            carry=*iter/10;
+            *iter%=10;
+        }
+        if(carry>0)
+            digits.insert(digits.begin(),1);
+    }
+    vector<int> plusOne(vector<int> &digits) {
+        add(digits,1);
+        return digits;
+    }
+    
+};
