@@ -1,0 +1,55 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ //广度遍历树，栈
+ //判断左右孩子是否相等
+class Solution {
+public:
+    bool isSymmetric(TreeNode *root) {
+      //树为空
+      if(!root)
+      {
+          return true;
+      }
+      stack<TreeNode*> s;
+      TreeNode *left;
+      TreeNode *right;
+      
+      s.push(root->left);
+      s.push(root->right);
+      
+      while(!s.empty())
+      {
+          left=s.top();
+          s.pop();
+          right=s.top();
+          s.pop();
+          
+          if(!left&&!right)
+          {
+              continue;
+          }
+          if(!left||!right)
+          {
+              return false;
+          }
+          if(left->val!=right->val)
+          {
+              return false;
+          }
+          
+          s.push(left->left);
+          s.push(right->right);
+          
+          s.push(left->right);
+          s.push(right->left);
+      }
+      return true;
+    }
+};
