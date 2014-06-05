@@ -1,0 +1,48 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ //对二叉树进行先序遍历
+ //组成链状，左子树设为空，右子树设为栈顶元素
+class Solution {
+public:
+    void flatten(TreeNode *root) {
+        //树为空
+        if(root==nullptr)
+        {
+            return ;
+        }
+        
+        stack<TreeNode*>s;
+        TreeNode *p;
+        s.push(root);
+        
+        while(!s.empty())
+        {
+            //先序遍历
+            p=s.top();
+            s.pop();
+            
+            if(p->right!=nullptr)
+            {
+                s.push(p->right);
+            }
+            if(p->left!=nullptr)
+            {
+                s.push(p->left);
+            }
+            
+            //转化为list
+            p->left=nullptr;
+            if(!s.empty())
+            {
+                p->right=s.top();
+            }
+        }
+    }
+};
