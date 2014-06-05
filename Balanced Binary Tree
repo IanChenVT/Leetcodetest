@@ -1,0 +1,35 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ //递归方法
+class Solution {
+public:
+   //如果树是平衡二叉树，则返回树的高度
+    //如果树不是平衡二叉树，则返回-1
+    int BalanceHeight(TreeNode *node)
+    {
+        //递归终止条件
+        if(node==nullptr)
+        {
+            return 0;
+        }
+        int left=BalanceHeight(node->left);
+        int right=BalanceHeight(node->right);
+        if(left<0||right<0||abs(left-right)>1)
+        {
+            return -1;
+        }
+        return max(left,right)+1;
+    }
+    bool isBalanced(TreeNode *root) {
+      return BalanceHeight(root)>=0;
+    }
+ 
+  
+};
