@@ -1,0 +1,30 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ 
+ //二叉排序树的特点是左子树的元素比根小，右子树比根大
+ //递归处理
+ //边界条件是叶子节点终止
+class Solution {
+public:
+    bool isValidBST(TreeNode *root) {
+        return isValidBST(root,INT_MIN,INT_MAX);
+    }
+    
+    bool isValidBST(TreeNode *root,int lower,int upper)
+    {
+        //递归终止条件叶子节点的左右都为空
+        if(root==nullptr)
+        {
+            return true;
+        }
+        
+        return root->val>lower&&root->val<upper&&isValidBST(root->left,lower,root->val)&&isValidBST(root->right,root->val,upper);
+    }
+};
