@@ -1,0 +1,37 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode *root) {
+       vector<int>  result;
+       const TreeNode *p;
+       stack<const TreeNode*>s;
+       p=root;
+       while(p!=nullptr||!s.empty())
+       {
+           //遍历左子树，并一直入栈,当找到最左的叶子结点，并转而遍历右子树，右子树遍历完返回父亲
+           if(p!=nullptr)
+           {
+               s.push(p);
+               p=p->left;
+           }
+           else
+           {
+               //当右子树为空，将其父出栈
+               //当左子树为空，将自己出栈
+               p=s.top();
+               s.pop();
+               result.push_back(p->val);
+               p=p->right;
+           }
+       }
+       return result;
+    }
+};
